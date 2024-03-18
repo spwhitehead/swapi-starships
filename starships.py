@@ -22,6 +22,21 @@ class Starship:
     pilots: list[Pilot]
 
 
-response = requests.get("https://swapi.dev/api/starships")
-response.json()
-print()
+def print_starships(starships: list) -> None:
+    for starship in starships:
+        print(starship["name"])
+
+
+url = "https://swapi.dev/api/starships"
+response = requests.get(url)
+results = response.json()
+print_starships(results["results"])
+
+while results["next"] is not None:
+    url = results["next"]
+    response = requests.get(url)
+    results = response.json()
+    print_starships(results["results"])
+
+
+print("Done")
